@@ -9,15 +9,20 @@ namespace Task4
 {
     class TrustAccount : SavingAccount
     {
+        int CuurentYear = 0 ;
+        int NumberOfWithDraws = 0;
         public TrustAccount(string name = "Unnamed Account", double balance = 0.00, double interstRate = 0.00):base(name, balance,interstRate)
         {
-
+            CuurentYear = DateTime.Now.Year;
         }
+
        
+       
+
 
         public override bool Deposit(double amount)
         {
-            if (amount>0||amount>=5000)
+            if (amount>0&&amount>=5000)
             {
                 return base.Deposit(amount + 50);
             }
@@ -28,10 +33,23 @@ namespace Task4
 
         public override bool Withdraw(double amount)
         {
-            if (amount > 0 && amount <= Balance * .2)  
+
+
+            if (DateTime.Now.Year > CuurentYear)
             {
+                NumberOfWithDraws = 0;
+                CuurentYear = DateTime.Now.Year;
+            }
+            if ( NumberOfWithDraws >= 3)
+            {
+                return false;
+            }
+            if (amount > 0 && amount <= Balance * .2 && Balance >= amount) 
+            {
+                NumberOfWithDraws++;
                 return base.Withdraw(amount);
             }
+
 
             return false;
         }
